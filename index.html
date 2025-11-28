@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BO7 Scrims – CDL Mapset Discord Matchmaking (Coming Soon)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+        content="BO7 Scrims is a Discord-first scrim finder for Call of Duty: Black Ops using the CDL 2026 competitive mapset. Join the alpha and help shape the ranked experience." />
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-alt: #101218;
+      --accent: #ff3b3b;
+      --accent2: #2b6cff;
+      --text: #f5f5f5;
+      --muted: #a0a4b8;
+      --card: #141823;
+      --border: #25293a;
+      --radius: 12px;
+      --shadow: 0 18px 40px rgba(0,0,0,0.6);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #181b25 0, #050608 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+    }
+    .logo-text-main { font-weight: 700; letter-spacing: 0.08em; font-size: 13px; text-transform: uppercase; }
+    .logo-text-sub { font-size: 11px; color: var(--muted); }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+
+    main { display: grid; gap: 32px; }
+
+    .hero {
+      display: grid;
+      gap: 24px;
+    }
+    @media (min-width: 800px) {
+      .hero {
+        grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+        align-items: center;
+      }
+    }
+    .hero-title {
+      font-size: clamp(32px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .hero-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .hero-actions {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ff7b54);
+      border-radius: 999px;
+      padding: 10px 22px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary span.icon {
+      font-size: 16px;
+    }
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 8px 18px;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(10,10,18,0.7);
+    }
+
+    .hero-card {
+      background: radial-gradient(circle at top, #22263a 0, #11131d 52%, #050608 100%);
+      border-radius: 18px;
+      padding: 18px 18px 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: var(--shadow);
+    }
+    .hero-card-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .hero-card-main {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .hero-card-sub {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .chip {
+      font-size: 11px;
+      border-radius: 999px;
+      padding: 3px 9px;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--muted);
+      background: rgba(10,10,18,0.7);
+    }
+
+    .section {
+      background: rgba(10,10,18,0.9);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      padding: 18px 18px 16px;
+    }
+    .section + .section { margin-top: 8px; }
+    .section h2 {
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 10px;
+      color: var(--muted);
+    }
+    .section h3 {
+      font-size: 14px;
+      margin-top: 12px;
+      margin-bottom: 4px;
+    }
+    .section p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .section ul {
+      list-style: none;
+      margin-top: 6px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .section ul li {
+      padding-left: 14px;
+      position: relative;
+      margin-bottom: 4px;
+    }
+    .section ul li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent2);
+    }
+
+    .two-col {
+      display: grid;
+      gap: 18px;
+    }
+    @media (min-width: 800px) {
+      .two-col {
+        grid-template-columns: 1.3fr 1fr;
+      }
+    }
+
+    .roadmap-grid {
+      display: grid;
+      gap: 10px;
+    }
+    @media (min-width: 700px) {
+      .roadmap-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+    .tag-live {
+      font-size: 11px;
+      color: #4ef58a;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .tag-next {
+      font-size: 11px;
+      color: #f5e14e;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .tag-future {
+      font-size: 11px;
+      color: #8ea2ff;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .faq-item + .faq-item { margin-top: 10px; }
+
+    footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="logo-wrap">
+        <div class="logo-circle">B7</div>
+        <div>
+          <div class="logo-text-main">BO7 SCRIMS</div>
+          <div class="logo-text-sub">CDL Mapset ’26 • Discord Matchmaking</div>
+        </div>
+      </div>
+      <div class="pill">Alpha • Coming Soon</div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <h1 class="hero-title">CDL-style scrims, without the clunky websites.</h1>
+          <p class="hero-sub">
+            BO7 Scrims is a Discord-first scrim finder for Call of Duty: Black Ops using the official CDL 2026 competitive mapset. 
+            No paywall, no “everyone must stream” requirement by default.
+          </p>
+          <div class="hero-actions">
+            <a href="YOUR_DISCORD_INVITE_HERE" target="_blank" rel="noopener">
+              <button class="btn-primary">
+                <span class="icon">🔴</span>
+                <span>Join the BO7 Discord (Alpha)</span>
+              </button>
+            </a>
+            <div class="btn-ghost">Suggestions & feedback open now in #suggestions</div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-card-title">What is live right now?</div>
+          <div class="hero-card-main">
+            Scrim matchmaking is in <span style="color: #4ef58a;">test mode</span> for
+            4v4 / 3v3 / 2v2 / 1v1 CDL Mapset ’26.
+          </div>
+          <p class="hero-card-sub">
+            Queue up, play a few games, and tell us what sucks so we can fix it before 
+            the full ranked ladder and leaderboards go live.
+          </p>
+          <div class="chip-row">
+            <div class="chip">CDL 2026 Mapset</div>
+            <div class="chip">Discord-Only Flow</div>
+            <div class="chip">Vote Reroll</div>
+            <div class="chip">Status Panel</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="two-col">
+        <div class="section">
+          <h2>Why bo7 instead of pubs or cmg?</h2>
+          <h3>Discord-native experience</h3>
+          <p>Queue, match, and report results directly inside Discord. No extra tabs, no account forms.</p>
+
+          <h3>CDL 2026 Mapset only</h3>
+          <p>Every game uses the official competitive maps & modes: Blackheart, Colossus, Den, Exposure, Scar & Raid.</p>
+
+          <h3>Less strict than CMG</h3>
+          <p>No automatic “everyone must stream” rule for free games. Community-driven rules with optional “verified” queues later.</p>
+
+          <h3>Party-aware matchmaking</h3>
+          <p>Queue solo or with your squad. We prioritize matching you against similar party sizes so stacks don’t stomp randoms.</p>
+
+          <h3>Community-led roadmap</h3>
+          <p>Your ideas in <strong>#suggestions</strong> directly shape the bot and future ranked features.</p>
+        </div>
+
+        <div class="section">
+          <h2>how it will work</h2>
+          <h3>1. Register</h3>
+          <p>Use <code>/register</code> to set your platform and region so we can avoid scuffed connections.</p>
+
+          <h3>2. Queue up</h3>
+          <p>Click a button for CDL Mapset ’26: 4v4, 3v3, 2v2, or 1v1 Test mode. Join solo or as a party.</p>
+
+          <h3>3. Play & report</h3>
+          <p>A lobby channel and voice are created for your match. Map/mode is rolled, results can be reported, rerolls can be voted.</p>
+
+          <p style="margin-top:10px;">
+            <strong>Right now:</strong> the core flow is in <em>alpha testing</em> while we tune matchmaking and collect feedback.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>feature roadmap</h2>
+        <div class="roadmap-grid">
+          <div>
+            <div class="tag-live">Live in alpha</div>
+            <ul>
+              <li>CDL 2026 Mapset (HP / S&D / Overload)</li>
+              <li>4v4 / 3v3 / 2v2 / 1v1 queues</li>
+              <li>Solo & party queue support</li>
+              <li>Scrim lobby channels & voice</li>
+              <li>Map/mode rolls per game</li>
+              <li>Vote reroll system</li>
+              <li>Scrim status dashboard</li>
+              <li>Suggestions forum</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tag-next">Next up</div>
+            <ul>
+              <li>Per-map result summaries</li>
+              <li>Series & session stats</li>
+              <li>Basic leaderboards</li>
+              <li>Experimental ELO rating</li>
+              <li>Anti-grief cooldowns</li>
+              <li>Weekend ladder events</li>
+            </ul>
+          </div>
+          <div>
+            <div class="tag-future">Future ideas</div>
+            <ul>
+              <li>Public web stat profiles</li>
+              <li>Season passes & divisions</li>
+              <li>Prize-supported tournaments</li>
+              <li>Optional “verified/streamed” queues</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>faq</h2>
+        <div class="faq-item">
+          <h3>Is this free?</h3>
+          <p>Yes. During alpha, queues and scrims inside the BO7 Discord are free to use.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What platforms do you support?</h3>
+          <p>Any platform that can play Call of Duty: Black Ops and join Discord. You just select your platform when you register.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do I have to stream every match?</h3>
+          <p>No. Streaming may be required only for specific higher-stakes queues or events later, not for default matchmaking.</p>
+        </div>
+        <div class="faq-item">
+          <h3>When will ranked & ELO go live?</h3>
+          <p>Once the core matchmaking flow is stable and we’ve collected enough feedback from early players. Join now to help shape it.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>join the early crew</h2>
+        <p style="margin-bottom:10px;font-size:13px;color:var(--muted);">
+          If you’re tired of random pubs and clunky tournament sites, this server is for you.
+          Jump into the alpha, play a few sets, and drop your feedback in <strong>#suggestions</strong>.
+        </p>
+        <a href="YOUR_DISCORD_INVITE_HERE" target="_blank" rel="noopener">
+          <button class="btn-primary">
+            <span class="icon">🎮</span>
+            <span>Join BO7 Scrims on Discord</span>
+          </button>
+        </a>
+      </section>
+    </main>
+
+    <footer>
+      BO7 Scrims is a community-run project and not affiliated with Activision, Call of Duty League, or Major League Gaming.
+    </footer>
+  </div>
+</body>
+</html>
